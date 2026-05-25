@@ -1,10 +1,10 @@
 import Link from 'next/link'
-import './globals.css' // 👈 MUST have this to load Tailwind
+import './globals.css'
 
 export default function Layout({ children }) {
   return (
       <html lang="en">
-      <body className="bg-gray-50 text-slate-900"> {/* 👈 Sets base colors */}
+      <body className="bg-gray-50 text-slate-900"> {}
       <nav className="bg-red-900 border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">

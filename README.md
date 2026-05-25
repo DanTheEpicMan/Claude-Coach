@@ -39,7 +39,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 
 # Claude-Coach
-# !!!! Evem though the API utiliizes claude, AI was NOT used in programming this, just as an endpoint
+# !!!! Evem though the API utiliizes claude, AI was NOT (significantly) used in programming this, just as an endpoint
 
 ## Goals of the project
 
