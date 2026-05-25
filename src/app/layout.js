@@ -14,6 +14,7 @@ export default function Layout({ children }) {
               <Link href="/Debrief" className="hover:text-black">Debrief</Link>
               <Link href="/Diet" className="hover:text-black">Diet</Link>
               <Link href="/Chat" className="hover:text-black">Chat</Link>
+              <Link href="/signinup" className="hover:text-black">Account</Link>
             </div>
           </div>
         </div>
