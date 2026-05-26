@@ -57,7 +57,7 @@ export async function updateSession(request) {
     //custom routing/protections
     if (
         !user && //not signed in
-        !(request.nextUrl.pathname == "/" || request.nextUrl.pathname == "/signinup") //and not main/login page
+        !(request.nextUrl.pathname == "/" || request.nextUrl.pathname.startsWith('/signinup')) //and not main/login page
     ) {
         const url = request.nextUrl.clone()
         url.pathname = '/signinup'
