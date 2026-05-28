@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation';
-import { isUserAuth } from '../utils/supabase/middleware'
+import { isUserAuth } from '@/utils/supabase/server'
 
 export default async function Home() {
   if (await isUserAuth()) {

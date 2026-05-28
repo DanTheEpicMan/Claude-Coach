@@ -1,37 +1,63 @@
-import { createClient } from '@/utils/supabase/server'
-import { redirect } from 'next/navigation'
+'use client'
 
+import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import { updatePassword } from './actions'
 
-export default async function ResetPasswordPage({ searchParams }) {
-    const { code } = await searchParams
+export default function ResetPasswordPage({ searchParams }) {
+    const router = useRouter()
 
-    if (!code) {
-        redirect('/signinup')
-    }
+    const [statusText, setStatusText] = useState("")
+    const [isSubmitting, setIsSubmitting] = useState(false)
 
-    const supabase = await createClient()
-    const { error } = await supabase.auth.exchangeCodeForSession(code)
+    const handleSubmit = async (event) => {
+        event.preventDefault()
+        setIsSubmitting(true)
+        setStatusText("Updating password... Please wait.")
 
-    if (error) {
-        redirect('/signinup')
+        const formData = new FormData(event.currentTarget)
+
+        try {
+            await updatePassword(formData)
+
+            setStatusText("Password updated successfully! Redirecting in 3 seconds...")
+
+            setTimeout(() => {
+                router.push('/signinup')
+            }, 3000)
+
+        } catch (error) {
+            setStatusText("Failed to update password. Please try again.")
+            setIsSubmitting(false)
+        }
     }
 
     return (
         <div className="flex flex-col place-items-center gap-8 p-10 gap-y-20">
-            <div className="h-48 aspect-[7/4]">
+            <form onSubmit={handleSubmit} className="h-48 aspect-7/4">
                 <h1 className="text-3xl font-bold text-center">Reset Password</h1>
+
                 <label htmlFor="password">New Password</label>
-                <input id="password" name="password" type="password" required autoComplete="password" className="block w-full rounded-md bg-gray-300 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-red-700 placeholder:text-red-950 text-red-950 focus:-outline-offset-1 focus:outline-2 focus:outline-red-300 sm:text-sm/6 autofill:shadow-[inset_0_0_0px_1000px_#d1d5db] autofill:text-red-950"/>
+                <input id="password" name="password" type="password" required className="block w-full rounded-md bg-gray-300 px-3 py-1.5 text-red-950 sm:text-sm/6"/>
                 <br/>
-                <label htmlFor="password">Confirm New Password</label>
-                <input id="password" name="password" type="password" required autoComplete="password" className="block w-full rounded-md bg-gray-300 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-red-700 placeholder:text-red-950 text-red-950 focus:-outline-offset-1 focus:outline-2 focus:outline-red-300 sm:text-sm/6 autofill:shadow-[inset_0_0_0px_1000px_#d1d5db] autofill:text-red-950"/>
+
+                <label htmlFor="confirmPassword">Confirm New Password</label>
+                <input id="confirmPassword" name="confirmPassword" type="password" required className="block w-full rounded-md bg-gray-300 px-3 py-1.5 text-red-950 sm:text-sm/6"/>
                 <br/>
+
                 <button
-                    className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-600 rounded w-full"
-                    formAction={action}>
-                    Update Password
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="bg-red-500 hover:bg-red-400 text-white font-bold py-2 px-4 border-b-4 border-red-700 hover:border-red-600 rounded w-full disabled:bg-gray-400">
+                    {isSubmitting ? "Processing..." : "Update Password"}
                 </button>
-            </div>
+
+                {statusText && (
+                    <p className="mt-4 text-center font-medium text-red-700 animate-pulse">
+                        {statusText}
+                    </p>
+                )}
+            </form>
         </div>
     )
 }

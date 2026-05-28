@@ -4,6 +4,11 @@ import { revalidatePath } from 'next/cache'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/utils/supabase/server'
 import { headers } from 'next/headers'
+import { getUser } from '@/utils/supabase/server'
+
+export async function handleAuthAction() {
+    return await getUser()
+}
 
 export async function resetPassword(formData) {
     const supabase = await createClient()
@@ -15,7 +20,9 @@ export async function resetPassword(formData) {
         redirectTo: `${origin}/signinup/reset-password`,
     })
 
-    console.log(error)
+    if (error) {
+        redirect(`/error?message=${encodeURIComponent(error.message)}`);
+    }
 }
 
 export async function signup(formData) {
@@ -29,7 +36,7 @@ export async function signup(formData) {
     const { error } = await supabase.auth.signUp(data)
 
     if (error) {
-        redirect('/error')
+        redirect(`/error?message=${encodeURIComponent(error.message)}`);
     }
 
     revalidatePath('/', 'layout') //re-renders
@@ -45,7 +52,7 @@ export async function login(formData) {
     })
 
     if (error) {
-        redirect('/error')
+        redirect(`/error?message=${encodeURIComponent(error.message)}`);
     }
 
     revalidatePath('/', 'layout')

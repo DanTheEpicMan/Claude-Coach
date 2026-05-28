@@ -1,9 +1,7 @@
 'use client';
-import { signup } from './actions'
-import { login } from './actions'
-import { logout } from './actions'
-import { resetPassword } from './actions'
-import { useState } from 'react';
+import { signup, login, logout, resetPassword, handleAuthAction } from './actions'
+import { useState, useEffect } from 'react';
+
 
 //Meant to be used inside a form
 function customButtonRed({ name, action }) {
@@ -16,25 +14,22 @@ function customButtonRed({ name, action }) {
     )
 }
 
-//Meant to be used inside a form
-function displayPasswordReset({isLogin}) {
-    if (isLogin) {
-        return (
-            <div>
-                <button
-                    className="hover:text-red-300 text-red-500"
-                    formAction={login}>
-                    Forgot Password?
-                </button>
-                <br/>
-            </div>
-        )
-    }
-    return (<span style={{display: 'none'}}/>)
-}
-
+//meant to be used inside a form
 function PopupForgotPassword({isLogin}) {
     const [isOpen, setIsOpen] = useState(false);
+    const [isSumbitted, setIsSumbitted] = useState(false);
+
+    useEffect(() => {
+        if (isSumbitted) {
+
+            const timer = setTimeout(() => {
+                setIsOpen(false);
+                setIsSumbitted(false);
+            }, 3000)
+
+            return () => clearTimeout(timer);
+        }
+    }, [isSumbitted])
 
     if (isLogin) {
         return (
@@ -51,15 +46,19 @@ function PopupForgotPassword({isLogin}) {
                     <div className="fixed inset-0 bg-black bg-opacity-10 flex items-center justify-center z-50">
                         <div className="bg-white p-6 rounded-lg shadow-lg">
                             <h2 className="text-xl text-black font-bold">Password Reset</h2>
+                            <p className="text-black">NOTE: Repeated password resets in a short time will lead to new emails not coming in, if you dont receive an email, try again in 1 hour</p>
                             <p className={"text-black"}>Enter the email for the account for witch you would like the password reset</p>
                             <input id="email" name="email" type="email" required className="block w-full rounded-md bg-gray-300 px-3 py-1.5 text-base outline-1 -outline-offset-1 outline-red-700 placeholder:text-red-950 text-red-950 focus:-outline-offset-1 focus:outline-2 focus:outline-red-300 sm:text-sm/6"/>
                             <button
                                 formAction={resetPassword}
-                                //onClick={() => setIsOpen(false)}
+                                onClick={() => setIsSumbitted(true)}
                                 className="mt-4 px-4 py-2 bg-red-500 text-white rounded"
                             >
                                 Send me the reset email
                             </button>
+                            {isSumbitted && (
+                                <p className="text-green-800">Check your email for the password reset!</p>
+                            )}
                         </div>
                     </div>
                 )}
@@ -95,13 +94,28 @@ function EnterForm({ title, lambdaFunction, isLogin }) {
 
 
 export default function SigninupPage() {
+    const [user, setUser] = useState("...")
+
+    useEffect(() => {
+        async function fetchUser() {
+            const userData = await handleAuthAction()
+            setUser(userData)
+        }
+        fetchUser()
+    }, [])
+
+    //Shows loading when there is no content in the email
+    const getEmailStr = str => {if (!str) {return "..."} return str }
+
     return (
+        <div className="flex flex-col place-items-center">
+        <p>Currently signed in as: {getEmailStr(user.email)}</p>
         <div className="flex flex-col place-items-center gap-8 p-10 gap-y-20">
-            <div className="h-48 aspect-[7/4]">
+            <div className="h-48 aspect-7/4">
                 {EnterForm({title: 'Sign Up', lambdaFunction: signup, isLogin: false})}
             </div>
             <hr/>
-            <div className="h-48 aspect-[7/4]">
+            <div className="h-48 aspect-7/4">
                 {EnterForm({title: 'Login', lambdaFunction: login, isLogin: true})}
             </div>
             <hr/>
@@ -109,6 +123,7 @@ export default function SigninupPage() {
                 <h1 className="text-3xl font-bold text-center">Logout</h1>
                 {customButtonRed({name: "Logout", action: logout})}
             </div>
+        </div>
         </div>
     )
 }
