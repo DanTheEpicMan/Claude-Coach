@@ -6,6 +6,8 @@ import { createClient } from '@/utils/supabase/server'
 import { headers } from 'next/headers'
 import { getUser } from '@/utils/supabase/server'
 
+//TODO: configure the exact allowed redirect URL in your Supabase project's Auth → URL Configuration → Redirect URLs whitelist as a second layer of defense.
+
 export async function handleAuthAction() {
     return await getUser()
 }
@@ -15,6 +17,8 @@ export async function resetPassword(formData) {
 
     const headersList = await headers()
     const origin = headersList.get('origin')
+    //TODO: make this not commented out in prod
+    // const origin = process.env.NEXT_PUBLIC_SITE_URL
 
     const { error } = await supabase.auth.resetPasswordForEmail(formData.get('email'), {
         redirectTo: `${origin}/signinup/reset-password`,
@@ -60,6 +64,7 @@ export async function login(formData) {
 }
 
 export async function logout() {
+    console.log("Logging Out")
     const supabase = await createClient()
     await supabase.auth.signOut()
     redirect('/')

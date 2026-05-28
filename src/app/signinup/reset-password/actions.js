@@ -11,6 +11,9 @@ export async function updatePassword(formData) {
     })
 
     console.log(error)
+    if (error) {
+        redirect(`/error?message=${encodeURIComponent(error.message)}`);
+    }
 
     redirect('/signinup')
 }
