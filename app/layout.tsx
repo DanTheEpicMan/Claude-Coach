@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist } from "next/font/google";
 import { ThemeProvider } from "next-themes";
 import "./globals.css";
+import Link from "next/link";
 
 const defaultUrl = process.env.VERCEL_URL
   ? `https://${process.env.VERCEL_URL}`
@@ -33,7 +34,23 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          {/*Navbar*/}
+          <nav>
+            <div className="mx-auto sm:px-6 lg:px-8*">
+              <div className="flex justify-between h-16 items-center">
+                <div className="flex space-x-8 font-medium">
+                  <Link href="/" className="hover:text-black">Home</Link>
+                  <Link href="/Workout" className="hover:text-black">Workout</Link>
+                  <Link href="/Debrief" className="hover:text-black">Debrief</Link>
+                  <Link href="/Diet" className="hover:text-black">Diet</Link>
+                  <Link href="/Chat" className="hover:text-black">Chat</Link>
+                  <Link href="/signinup" className="hover:text-black">Account</Link>
+                </div>
+              </div>
+            </div>
+          </nav>
+          {/*rest of the page*/}
+          <main>{children}</main>
         </ThemeProvider>
       </body>
     </html>
