@@ -1,32 +1,39 @@
 import { redirect } from 'next/navigation';
 import { Button } from "@/components/ui/button";
-import {createClient} from "@/lib/supabase/client";
+import { createClient } from "@/lib/supabase/server";
 import Link from "next/link";
+import {Suspense} from "react";
 
+async function RedirectIfLoggedIn() {
+    const supabase = await createClient();
+    const { data: { user }, error } = await supabase.auth.getUser();
 
-export default async function Home() {
-  // redirect people who are signed into to the dashboard
-  const supabase = createClient();
-  const { data: { user }, error } = await supabase.auth.getUser();
+    if (user) {
+        redirect("/dashboard");
+    }
 
-  //Signed in
-  if (!(error || !user)) {
-    redirect("/Dashboard");
-  }
+    return null;
+}
 
-  //What users who are not sigend in
-  return(
-      <div>
-        <h1>Join this super cool website</h1>
-        <p>Consider making an account</p>
+export default function Home() {
+    return(
+        <div className="pageFormat">
+            <Suspense fallback={null}>
+                <RedirectIfLoggedIn />
+            </Suspense>
 
-          <Link href="/auth/sign-up" passHref>
-              <Button variant="default">SignUp</Button>
-          </Link>
+            <h1>Join this super cool website</h1>
+            <p>Consider making an account</p>
 
-          <Link href="/auth/login" passHref>
-              <Button variant="secondary">Login</Button>
-          </Link>
-      </div>
-  )
+            <div className="flex gap-x-5">
+                <Link href="/auth/sign-up" passHref>
+                    <Button variant="default">SignUp</Button>
+                </Link>
+
+                <Link href="/auth/login" passHref>
+                    <Button variant="secondary">Login</Button>
+                </Link>
+            </div>
+        </div>
+    )
 }

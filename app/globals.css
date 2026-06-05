@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer components {
+  .groupHeader {
+    @apply text-3xl font-bold;
+  }
+
+  .dividerLineDiv {
+    @apply border-t-2 border-white my-4;
+  }
+
+  .pageFormat {
+    @apply min-w-[50%] flex flex-col gap-y-6 place-items-center
+  }
+}
+
+
 @layer base {
   :root {
     --background: 0 0% 100%;
