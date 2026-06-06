@@ -8,11 +8,11 @@
   }
 
   .dividerLineDiv {
-    @apply border-t-2 border-white my-4;
+    @apply border-t-2 border-white;
   }
 
   .pageFormat {
-    @apply min-w-[50%] flex flex-col gap-y-6 place-items-center
+    @apply w-[90%] sm:w-[50%] mx-auto flex flex-col gap-y-6;
   }
 }
 

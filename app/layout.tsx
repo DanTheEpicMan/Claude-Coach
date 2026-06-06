@@ -40,10 +40,10 @@ export default function RootLayout({
               <div className="flex justify-between h-16 items-center">
                 <div className="flex space-x-8 font-medium">
                   <Link href="/" className="hover:text-black">Home</Link>
-                  <Link href="/Workout" className="hover:text-black">Workout</Link>
-                  <Link href="/Debrief" className="hover:text-black">Debrief</Link>
-                  <Link href="/Diet" className="hover:text-black">Diet</Link>
-                  <Link href="/Chat" className="hover:text-black">Chat</Link>
+                  <Link href="/workout" className="hover:text-black">Workout</Link>
+                  <Link href="/debrief" className="hover:text-black">Debrief</Link>
+                  <Link href="/diet" className="hover:text-black">Diet</Link>
+                  <Link href="/chat" className="hover:text-black">Chat</Link>
                   <Link href="/account" className="hover:text-black">Account</Link>
                 </div>
               </div>
