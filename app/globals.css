@@ -12,7 +12,15 @@
   }
 
   .pageFormat {
-    @apply w-[90%] sm:w-[50%] mx-auto flex flex-col gap-y-6;
+    @apply w-[96%] sm:w-[50%] mx-auto flex flex-col gap-y-6;
+  }
+
+  .roundEdgeWhiteOutlineDiv {
+    @apply border-2 border-white rounded-xl p-4;
+  }
+
+  .hideArrows {
+    @apply [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none
   }
 }
 

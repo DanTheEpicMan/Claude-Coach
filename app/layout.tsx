@@ -39,12 +39,12 @@ export default function RootLayout({
             <div className="mx-auto sm:px-6 lg:px-8*">
               <div className="flex justify-between h-16 items-center">
                 <div className="flex space-x-8 font-medium">
-                  <Link href="/" className="hover:text-black">Home</Link>
-                  <Link href="/workout" className="hover:text-black">Workout</Link>
-                  <Link href="/debrief" className="hover:text-black">Debrief</Link>
-                  <Link href="/diet" className="hover:text-black">Diet</Link>
-                  <Link href="/chat" className="hover:text-black">Chat</Link>
-                  <Link href="/account" className="hover:text-black">Account</Link>
+                  <Link href="/" className="hover:text-gray-500">Home</Link>
+                  <Link href="/workout" className="hover:text-gray-500">Workout</Link>
+                  <Link href="/debrief" className="hover:text-gray-500">Debrief</Link>
+                  <Link href="/diet" className="hover:text-gray-500">Diet</Link>
+                  <Link href="/chat" className="hover:text-gray-500">Chat</Link>
+                  <Link href="/account" className="hover:text-gray-500">Account</Link>
                 </div>
               </div>
             </div>
